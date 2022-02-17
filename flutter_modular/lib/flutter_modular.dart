@@ -3,6 +3,7 @@ library flutter_modular;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/src/flutter_modular_module.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:modular_core/modular_core.dart';
 
 import 'src/domain/usecases/get_arguments.dart';
@@ -122,6 +123,48 @@ extension ModularExtensionCupertino on CupertinoApp {
       onGenerateTitle: onGenerateTitle,
       color: color,
       theme: theme,
+      locale: locale,
+      localizationsDelegates: localizationsDelegates,
+      localeListResolutionCallback: localeListResolutionCallback,
+      localeResolutionCallback: localeResolutionCallback,
+      supportedLocales: supportedLocales,
+      showPerformanceOverlay: showPerformanceOverlay,
+      checkerboardRasterCacheImages: checkerboardRasterCacheImages,
+      checkerboardOffscreenLayers: checkerboardOffscreenLayers,
+      showSemanticsDebugger: showSemanticsDebugger,
+      debugShowCheckedModeBanner: debugShowCheckedModeBanner,
+      shortcuts: shortcuts,
+      actions: actions,
+      restorationScopeId: restorationScopeId,
+      routeInformationParser: injector.get<ModularRouteInformationParser>(),
+      routerDelegate: injector.get<ModularRouterDelegate>(),
+    );
+
+    return app;
+  }
+}
+
+extension ModularExtensionFluent on FluentApp {
+  FluentApp modular() {
+    injector
+        .get<IModularNavigator>()
+        .setObserver(navigatorObservers ?? <NavigatorObserver>[]);
+
+    injector.get<IModularNavigator>().setNavigatorKey(navigatorKey);
+
+    initialRouteDeclaredInMaterialApp = initialRoute ?? '/';
+
+    final app = FluentApp.router(
+      key: key,
+      routeInformationProvider: routeInformationProvider,
+      backButtonDispatcher: backButtonDispatcher,
+      builder: builder,
+      title: title,
+      onGenerateTitle: onGenerateTitle,
+      color: color!,
+      theme: theme,
+      darkTheme: darkTheme,
+      themeMode: themeMode,
       locale: locale,
       localizationsDelegates: localizationsDelegates,
       localeListResolutionCallback: localeListResolutionCallback,
